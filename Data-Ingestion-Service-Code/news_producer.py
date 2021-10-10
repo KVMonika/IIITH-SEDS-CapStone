@@ -47,8 +47,8 @@ def get_data():
         stream_API_response(responseText)
 
 
-# After every 10mins geeks() is called.
-schedule.every(1).minutes.do(get_data)
+# After every 10 mins get_data() is called.
+schedule.every(10).minutes.do(get_data)
 
 while True:
     schedule.run_pending()
