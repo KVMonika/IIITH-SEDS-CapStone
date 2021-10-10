@@ -6,17 +6,6 @@ from news_stream import send_to_topic
 from random import randint                                                                                              
 from time import sleep
 
-# def remove_unnecessary_chars(input_str):
-#     punc = '''!()-[]{};:'"\,<>./?@#$%^&*_~'''
-
-#     # Removing punctuations in string
-#     # Using loop + punctuation string
-#     for ele in input_str:
-#         if ele in punc:
-#             input_str = input_str.replace(ele, "")
-    
-#     return input_str
-
 def call_news_API(search_query):
     # API call
     url = "https://free-news.p.rapidapi.com/v1/search"

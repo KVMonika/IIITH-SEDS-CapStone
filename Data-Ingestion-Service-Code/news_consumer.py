@@ -3,9 +3,9 @@ import pymongo
 import json
 import urllib
 
-mongo_db_client = pymongo.MongoClient("mongodb+srv://Smriti:" + urllib.parse.quote("Welcome@2021") + "@cluster0.znksh.mongodb.net/Newsfeed?retryWrites=true&w=majority&ssl=true&ssl_cert_reqs=CERT_NONE")
-newsFeedDataBase = mongo_db_client['Newsfeed']
-collection = newsFeedDataBase['newsfeed']
+mongo_db_client = pymongo.MongoClient("mongodb+srv://monika:monika@cluster0.99bxh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+newsFeedDataBase = mongo_db_client['news']
+collection = newsFeedDataBase['news']
 
 consumer = KafkaConsumer(bootstrap_servers='localhost:9092',auto_offset_reset='earliest')
 consumer.subscribe(['articles'])
