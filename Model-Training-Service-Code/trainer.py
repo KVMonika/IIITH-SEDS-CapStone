@@ -15,13 +15,13 @@ from pyspark.ml.classification import RandomForestClassifier
 from pyspark.ml.feature import StringIndexer, IndexToString
 from pyspark.ml.evaluation import MulticlassClassificationEvaluator
 
-from mlflow import spark as sp
+import mlflow
 
 Mongo_Atlas_URI = "mongodb+srv://monika:monika@cluster0.99bxh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 News_Feed_DataBase = "news"
 News_Collection_URI = Mongo_Atlas_URI + News_Feed_DataBase+ ".news"
 
-spark = (
+sparkSession = (
             SparkSession.builder.appName("News Classifier Training")
             .config("spark.mongodb.input.uri", News_Collection_URI)
             .config("spark.mongodb.output.uri", News_Collection_URI)
@@ -33,7 +33,7 @@ sc = SparkContext.getOrCreate()
 
 # Read data from MongoDB Atlas - DB.Collection: 'news.news'
 df = (
-        spark.read.format("com.mongodb.spark.sql.DefaultSource")
+        sparkSession.read.format("com.mongodb.spark.sql.DefaultSource")
         .option("database","news").option("collection", "news").load()
     )
 print("output:",df.show())
@@ -70,24 +70,9 @@ stopwords_cleaner = ( StopWordsCleaner()
 # Finisher (annotations to human readable)
 finisher = Finisher().setInputCols(['no_stop_stemmed'])
 
-# pipeline
-# pipeline = Pipeline().setStages([documentAssembler, tokenizer, normalizer, stemmer, stopwords_cleaner, finisher])
-
-#processed_text = pipeline.fit(df_filtered).transform(df_filtered)
-#print("Processed Text:")
-#print(processed_text.show())
-
 tfizer = CountVectorizer(inputCol='finished_no_stop_stemmed', outputCol='tf_features')
-#term_frequecy_res = tfizer.fit(processed_text).transform(processed_text)
 
 idfizer = IDF(inputCol='tf_features', outputCol='tf_idf_features')
-#idf_res = idfizer.fit(term_frequecy_res).transform(term_frequecy_res)
-
-# Pass False parameter in show to get full cell values instead of truncated
-# print("TF/IDF: ", idf_res.show(10, False))
-
-#print("TF/IDF: ", idf_res.show())
-#------------------------------------------------------------------------------------------------------
 
 labelIndexer = StringIndexer(inputCol="topic", outputCol="indexed_topic").fit(df_filtered)
 # Segregation
@@ -119,4 +104,4 @@ rfModel = model.stages[1]
 print(rfModel)  # summary only
 
 # save model
-sp.save_model(model, "news-classifier-model")
+mlflow.spark.save_model(model, "news-classifier-model")
