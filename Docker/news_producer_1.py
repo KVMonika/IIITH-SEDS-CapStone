@@ -6,7 +6,10 @@ from news_stream import send_to_topic
 from random import randint                                                                                              
 from time import sleep
 
-searchKeyList = ['news', 'sport', 'tech', 'world', 'finance', 'politics', 'business', 'economics', 'entertainment', 'beauty', 'gaming']
+_id_suffix = "_1"
+_searchKeyList = ['news', 'sport', 'tech', 'world', 'finance', 'politics', 'business', 'economics', 'entertainment', 'beauty', 'gaming']
+
+schedule_time_source_1 = 10
 
 def call_news_API(search_query):
     # API call
@@ -36,13 +39,14 @@ def stream_API_response(responseText):
         data['summary'] = article['summary']
         data['topic'] = article['topic']
         data['source'] = article['clean_url']
+        # data['_id'] = article['clean_url'] + _id_suffix
         # Send data to kafka topic
         send_to_topic(data)
         sleep(randint(1,4))
 
 
-def get_data():
-    for searchKey in searchKeyList:
+def get_data_source_1():
+    for searchKey in _searchKeyList:
         responseText = call_news_API(searchKey)
         if responseText is None:
             print("Data not found")
@@ -50,9 +54,10 @@ def get_data():
             stream_API_response(responseText)
 
 
-# After every 10 mins get_data() is called.
-schedule.every(10).minutes.do(get_data)
+# After every 10 mins get_data_source_1() is called.
+schedule.every(10).minutes.do(get_data_source_1)
 
 while True:
+    print("hi")
     schedule.run_pending()
     time.sleep(1)
