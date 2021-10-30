@@ -6,7 +6,6 @@ from news_stream import send_to_topic
 from random import randint                                                                                              
 from time import sleep
 
-import pandas as pd
 from requests_html import HTML
 from requests_html import HTMLSession
 import re

@@ -1,0 +1,7 @@
+kafka-python
+pandas
+pyspark
+pymongo
+pymongo[srv]
+schedule
+requests
