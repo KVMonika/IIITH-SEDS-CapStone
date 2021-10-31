@@ -56,7 +56,7 @@ def call_news_RSS_Feed(source, topic):
             data['summary'] = clean_text(description) #todo
             data['topic'] = topic
             data['source'] = source
-            # data['_id'] = guid + _id_suffix
+            data['_id'] = guid + _id_suffix
 
             print(data)
             send_to_topic(data)
@@ -69,8 +69,8 @@ def get_data_source_2():
 
 
 # After every 2 hours get_data_source_2() is called.
-schedule.every(1).minutes.do(get_data_source_2)
+#schedule.every(1).minutes.do(get_data_source_2)
 
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+#while True:
+    #schedule.run_pending()
+    #time.sleep(1)

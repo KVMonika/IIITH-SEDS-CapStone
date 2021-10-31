@@ -1,6 +1,6 @@
 kafka-python
 pandas
-pyspark
+pyspark==3.1.1
 pymongo
 pymongo[srv]
 schedule

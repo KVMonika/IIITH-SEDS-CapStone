@@ -9,6 +9,9 @@ schedule.every(schedule_time_source_1).minutes.do(get_data_source_1)
 # After every 2 hours get_data_source_2() is called.
 schedule.every(schedule_time_source_2).minutes.do(get_data_source_2)
 
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+# while True:
+#     schedule.run_pending()
+#     time.sleep(1)
+
+get_data_source_1()
+get_data_source_2()

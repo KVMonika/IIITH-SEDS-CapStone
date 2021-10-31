@@ -18,8 +18,9 @@ newsFeedDataBase = mongo_db_client['news']
 collection = newsFeedDataBase['news']
 
 consumer = KafkaConsumer(bootstrap_servers=[BROKER], auto_offset_reset='earliest')
-consumer.subscribe(['articles'])
+consumer.subscribe(['news'])
 
 for message in consumer :
-    collection.insert_one(json.loads(message.value.decode("UTF-8")))
+    #collection.insert_one(json.loads(message.value.decode("UTF-8")))
+    collection.update(json.loads(message.value.decode("UTF-8")), upsert=True)
     print(message.value)

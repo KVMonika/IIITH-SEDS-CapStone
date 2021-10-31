@@ -1,0 +1,94 @@
+<html>
+<head>
+    <title>News Classifier</title>
+</head>
+<script>
+    function formvalidate() {
+        var title = document.forms["MyForm"]["title"];
+        var description = document.forms["MyForm"]["description"];
+        if (title.value == "") {
+            window.alert("Please enter a valid title");
+            name.focus();
+            return false;
+        }
+
+        submit(title, description);
+
+        //return true;
+    }
+
+    function submit(title, description){
+        let requestBody = {
+            "title":article,
+            "description": description
+        };
+        let xhr = new XMLHttpRequest();
+        let url = "/predict/";
+
+        // open a connection
+        xhr.open("POST", url, false);
+
+        // Request header
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                let response = JSON.parse(xhr.response)
+                window.alert(response.msg + ", status" + response.status);
+            }
+        };
+
+        // Sending data with the request
+        xhr.send(JSON.stringify(requestBody));
+    }
+</script>
+  
+<style>
+    
+    body {
+    background-image: url("black.jpg");
+    }
+    div {
+        box-sizing: border-box;
+        width: 100%;
+        border: 100px solid black;
+        float: left;
+        align-content: center;
+        align-items: center;
+
+    }
+    .center {
+    text-align: center;
+    color: white;
+    margin-top: 100px
+    }
+    
+
+    form {
+        margin: 0 auto;
+        width: 600px;
+    }
+</style>
+  
+<body>
+    <h1 class="center">News Articles Classifier</h1>
+    <p class="center">Classify News Articles into corresponding categories</p>
+    
+    <form name="MyForm" onsubmit="return formvalidate()" method="post">
+        <p class="center"> Article: 
+            <label for="title" >Title</label>
+            <input id="title" type="text" size="65" name="title" />
+            <label for="description" >Description</label>
+            <input id="description" type="text" size="65" name="description" />
+        </p>
+        <br />
+        <br />
+
+        <p>
+            <input type="submit" value="send" name="Submit" />
+        </p>
+    </form>
+</body>
+</html>
+  
+ 

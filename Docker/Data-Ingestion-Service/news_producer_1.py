@@ -39,7 +39,7 @@ def stream_API_response(responseText):
         data['summary'] = article['summary']
         data['topic'] = article['topic']
         data['source'] = article['clean_url']
-        # data['_id'] = article['clean_url'] + _id_suffix
+        data['_id'] = article['clean_url'] + _id_suffix
         # Send data to kafka topic
         send_to_topic(data)
         sleep(randint(1,4))
@@ -55,9 +55,9 @@ def get_data_source_1():
 
 
 # After every 10 mins get_data_source_1() is called.
-schedule.every(30).minutes.do(get_data_source_1)
+# schedule.every(30).minutes.do(get_data_source_1)
 
-while True:
-    print("hi")
-    schedule.run_pending()
-    time.sleep(1)
+# while True:
+    # print("hi")
+    # schedule.run_pending()
+    # time.sleep(1)

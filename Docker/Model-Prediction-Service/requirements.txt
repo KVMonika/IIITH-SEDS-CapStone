@@ -1,8 +1,5 @@
-pyspark
-spark-nlp==3.3.1
-mlflow
-uvicorn
-fastapi
+pyspark==3.1.1
+spark-nlp==3.3.0
 nltk
-numpy
-pandas
+Flask
+mlflow

@@ -13,6 +13,7 @@ from pyspark.ml.feature import StringIndexer, IndexToString
 from pyspark.ml.evaluation import MulticlassClassificationEvaluator
 
 import mlflow
+import pickle
 
 def retrain_model():
     # ---- 01 Get data ----
@@ -42,7 +43,8 @@ def retrain_model():
     print("Test Error = %g" % (1.0 - accuracy))
 
     # ---- 03) save model ----
-    mlflow.spark.save_model(model, "../news-classifier-model")
+    #pickle.dump(model, open("models/news_classifier.pkl", "wb"))
+    mlflow.spark.save_model(model, "models/news-classifier-model")
     return True
 
 

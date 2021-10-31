@@ -6,7 +6,7 @@ import json
 from bson import json_util
 
 BROKER = os.getenv('BROKER', 'localhost:9092') 
-TOPIC = 'articles'
+TOPIC = 'news'
 
 try:
     p = KafkaProducer(bootstrap_servers=BROKER)
