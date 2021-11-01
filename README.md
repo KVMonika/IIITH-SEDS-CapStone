@@ -30,9 +30,14 @@ Model Training Service
     https://jar-download.com/artifacts/com.johnsnowlabs.nlp
     wget https://download.jar-download.com/cache_jars/com.johnsnowlabs.nlp/spark-nlp-spark24_2.11/3.3.0/jar_files.zip
 
+    after installing nltk, use download('stopwords') to install stopwords
+
 # Install MLFlow
     pip3 install mlflow
 
 # Install Fast API requirements
     pip3 install uvicorn
     pip3 install fastapi
+
+# Install Flask API
+    pip3 install Flask

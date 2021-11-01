@@ -3,3 +3,4 @@ spark-nlp==3.3.0
 nltk
 Flask
 mlflow
+pandas

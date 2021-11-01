@@ -1,21 +1,21 @@
 version: '3'
 
 services:
-  # zookeeper:
-  #   image: wurstmeister/zookeeper
-  #   ports:
-  #     - "2181:2181"
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
   
-  # kafka:
-  #   image: wurstmeister/kafka
-  #   ports:
-  #     - "9092:9092"
-  #   environment:
-  #     KAFKA_ADVERTISED_HOST_NAME: kafka
-  #     KAFKA_CREATE_TOPICS: "news:1:1"
-  #     KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-  #   depends_on: 
-  #     - zookeeper
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_CREATE_TOPICS: "news:1:1"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    depends_on: 
+      - zookeeper
 
   spark-master:
     image: bde2020/spark-master:3.1.1-hadoop3.2
@@ -24,6 +24,8 @@ services:
       - "7077:7077"
     environment:
       - INIT_DAEMON_STEP=setup_spark
+    volumes:
+      - ./models:/app/models
   
   spark-worker:
     image: bde2020/spark-worker:3.1.1-hadoop3.2
@@ -33,50 +35,50 @@ services:
       - "8081:8081"
     environment:
       - "SPARK_MASTER=spark://spark-master:7077"
+    volumes:
+      - ./models:/app/models
 
-  # producer:
-  #   build: Data-Ingestion-Service
-  #   environment: 
-  #     BROKER: kafka:9092
-  #   command: sh -c "spark-submit --master spark://spark-master:7077 producers_initiater.py"
-  #   depends_on: 
-  #     - spark-master
-  #     - kafka
+  producer:
+    build: Data-Ingestion-Service
+    environment: 
+      BROKER: kafka:9092
+    command: sh -c "spark-submit --master spark://spark-master:7077 producers_initiater.py"
+    depends_on: 
+      - spark-master
+      - kafka
   
-  # consumer:
-  #   build: Data-Ingestion-Service
-  #   environment: 
-  #     BROKER: kafka:9092
-  #   command: "spark-submit --master spark://spark-master:7077 news_consumer.py "
-  #   depends_on:
-  #     - spark-master
-  #     - kafka
-  #     - producer
+  consumer:
+    build: Data-Ingestion-Service
+    environment: 
+      BROKER: kafka:9092
+    command: "spark-submit --master spark://spark-master:7077 news_consumer.py "
+    depends_on:
+      - spark-master
+      - kafka
+      - producer
   
-  # trainer:
-  #   deploy:
-  #     replicas: 1
-  #   build: Model-Training-Service
-  #   command: "spark-submit --master spark://spark-master:7077 --packages org.mongodb.spark:mongo-spark-connector_2.12:3.0.1 --jars spark-nlp_2.12-3.3.0.jar main.py "
-  #   # environment:
-  #   #   - PREDICTR_ENDPOINT=http://predictr:9999
-  #   ports:
-  #     - "7777:7777"
-  #   volumes:
-  #     - ./models:/app/models
-  #   depends_on:
-  #     - spark-master
+  trainer:
+    deploy:
+      replicas: 1
+    build: Model-Training-Service
+    command: "spark-submit --master spark://spark-master:7077 --packages org.mongodb.spark:mongo-spark-connector_2.12:3.0.1 --jars spark-nlp_2.12-3.3.0.jar main.py "
+    ports:
+      - "7777:7777"
+    volumes:
+      - ./models:/app/models
+    depends_on:
+      - spark-master
+      - kafka
   
   predictor:
     deploy:
       replicas: 1
     build: Model-Prediction-Service
-    command: "spark-submit --master spark://spark-master:7077  main.py "
-    # environment:
-    #   - PREDICTR_ENDPOINT=http://predictr:9999
+    command: "spark-submit --master spark://spark-master:7077 --jars spark-nlp_2.12-3.3.0.jar main.py "
     ports:
       - "8111:8111"
     volumes:
       - ./models:/app/models
     depends_on:
       - spark-master
+      - kafka

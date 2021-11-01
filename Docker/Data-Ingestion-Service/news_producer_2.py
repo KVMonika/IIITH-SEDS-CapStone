@@ -22,7 +22,7 @@ _topicDic['business'] = "https://timesofindia.indiatimes.com/rssfeeds/1898055.cm
 
 _id_suffix = "_2"
 
-schedule_time_source_2 = 10
+schedule_time_source_2 = 360 #6 hours
 
 def get_source(url):
     try:
@@ -56,7 +56,7 @@ def call_news_RSS_Feed(source, topic):
             data['summary'] = clean_text(description) #todo
             data['topic'] = topic
             data['source'] = source
-            data['_id'] = guid + _id_suffix
+            #data['_id'] = guid + _id_suffix
 
             print(data)
             send_to_topic(data)

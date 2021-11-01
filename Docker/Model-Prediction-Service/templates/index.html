@@ -7,7 +7,13 @@
         var title = document.forms["MyForm"]["title"];
         var description = document.forms["MyForm"]["description"];
         if (title.value == "") {
-            window.alert("Please enter a valid title");
+            window.alert("Please enter a valid Title");
+            name.focus();
+            return false;
+        }
+
+        if (description.value == "") {
+            window.alert("Please enter a valid Summary");
             name.focus();
             return false;
         }
@@ -23,7 +29,7 @@
             "description": description
         };
         let xhr = new XMLHttpRequest();
-        let url = "/predict/";
+        let url = "http://predictor:8111/predict/";
 
         // open a connection
         xhr.open("POST", url, false);
@@ -46,7 +52,7 @@
 <style>
     
     body {
-    background-image: url("black.jpg");
+    background-color: whitesmoke;
     }
     div {
         box-sizing: border-box;
@@ -59,10 +65,17 @@
     }
     .center {
     text-align: center;
-    color: white;
-    margin-top: 100px
+    /* color: white; */
     }
     
+    .top-section {
+        height: 150px;
+        background-color: cornflowerblue;
+    }
+    .h1 {
+        margin-top: 100px;
+        color: white;
+    }
 
     form {
         margin: 0 auto;
@@ -71,23 +84,21 @@
 </style>
   
 <body>
-    <h1 class="center">News Articles Classifier</h1>
-    <p class="center">Classify News Articles into corresponding categories</p>
+    <h1 class="center top-section">News Articles Classifier</h1>
+    <p class="center">Please enter Title and Summary of Article</p>
     
     <form name="MyForm" onsubmit="return formvalidate()" method="post">
-        <p class="center"> Article: 
-            <label for="title" >Title</label>
-            <input id="title" type="text" size="65" name="title" />
-            <label for="description" >Description</label>
-            <input id="description" type="text" size="65" name="description" />
-        </p>
-        <br />
-        <br />
+         
+        <label for="title" >Title</label>
+        <input id="title" type="text" size="65" name="title" /></br>
+        <label for="description" >Description</label>
+        <input id="description" type="text" size="65" name="description" />
 
         <p>
             <input type="submit" value="send" name="Submit" />
         </p>
     </form>
+
 </body>
 </html>
   

@@ -44,7 +44,8 @@ def retrain_model():
 
     # ---- 03) save model ----
     #pickle.dump(model, open("models/news_classifier.pkl", "wb"))
-    mlflow.spark.save_model(model, "models/news-classifier-model")
+    #mlflow.spark.save_model(model, "models/news-classifier-model")
+    model.save("models/news-classifier-model_2")
     return True
 
 

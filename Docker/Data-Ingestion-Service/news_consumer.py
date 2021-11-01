@@ -21,6 +21,15 @@ consumer = KafkaConsumer(bootstrap_servers=[BROKER], auto_offset_reset='earliest
 consumer.subscribe(['news'])
 
 for message in consumer :
-    #collection.insert_one(json.loads(message.value.decode("UTF-8")))
-    collection.update(json.loads(message.value.decode("UTF-8")), upsert=True)
+    collection.insert_one(json.loads(message.value.decode("UTF-8")))
+    #payload = json.loads(message.value.decode("UTF-8"))
+
+    #filter = { '_id': payload['_id'] }
+  
+    # Values to be updated.
+    #newvalues = { "$set": payload }
+    
+    # Using update_one() method for single 
+    # updation.
+    #collection.update_one(filter, newvalues, upsert=True) 
     print(message.value)

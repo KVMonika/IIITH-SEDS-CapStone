@@ -9,7 +9,7 @@ from time import sleep
 _id_suffix = "_1"
 _searchKeyList = ['news', 'sport', 'tech', 'world', 'finance', 'politics', 'business', 'economics', 'entertainment', 'beauty', 'gaming']
 
-schedule_time_source_1 = 10
+schedule_time_source_1 = 360 # 6 hours
 
 def call_news_API(search_query):
     # API call
@@ -39,7 +39,7 @@ def stream_API_response(responseText):
         data['summary'] = article['summary']
         data['topic'] = article['topic']
         data['source'] = article['clean_url']
-        data['_id'] = article['clean_url'] + _id_suffix
+        #data['_id'] = article['clean_url'] + _id_suffix
         # Send data to kafka topic
         send_to_topic(data)
         sleep(randint(1,4))

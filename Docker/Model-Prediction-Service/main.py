@@ -7,7 +7,8 @@ app = Flask(__name__)
 def predict():
     payload = request.get_json()
     response = predict_topic(str(payload['title']), str(payload['description']))
-    return {"detail": "Training successful"}
+    return {"detail": response}
+
 
 @app.route('/')
 def home():
